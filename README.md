@@ -1,4 +1,4 @@
-### PsLib - library for stm32 microcontrollers
+### PSLib - library for stm32 microcontrollers
 
 Example
 ``` cpp
