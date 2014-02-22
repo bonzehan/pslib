@@ -1,5 +1,7 @@
 ### PSLib - library for stm32 microcontrollers
 
+Just for fun experemental C++ static template library. No source files, only headers.
+
 Example
 ``` cpp
 #include "ps_stm32.h"
