@@ -46,17 +46,17 @@ namespace ps
                 {
                     I::write((uint8_t)'[');
                     char time[16];
-                    I::write((uint8_t*)ps::util::itoa32(time, ps::sys::get_tick(), 10));
-                    I::write((uint8_t)']');
-                    I::write((uint8_t)' ');
-                    I::write((uint8_t*)_prompt);
-                    I::write((uint8_t)' ');
-                    I::write((uint8_t)'[');
-                    I::write((uint8_t)level);
-                    I::write((uint8_t)']');
-                    I::write((uint8_t)' ');
-                    I::write((uint8_t*)pBuff);
-                    I::write((uint8_t)'\n');
+                    I::write(ps::util::itoa32(time, ps::sys::get_tick(), 10));
+                    I::write(']');
+                    I::write(' ');
+                    I::write(_prompt);
+                    I::write(' ');
+                    I::write('[');
+                    I::write(level);
+                    I::write(']');
+                    I::write(' ');
+                    I::write(pBuff);
+                    I::write('\n');
                 }
 
                 public:

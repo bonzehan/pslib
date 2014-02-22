@@ -32,69 +32,26 @@
 
 namespace ps
 {
-    namespace hw
+    enum pin : const uint16_t
     {
-        enum pin : const uint16_t
-        {
-            pin_0   = GPIO_Pin_0,
-            pin_1   = GPIO_Pin_1,
-            pin_2   = GPIO_Pin_2,
-            pin_3   = GPIO_Pin_3,
-            pin_4   = GPIO_Pin_4,
-            pin_5   = GPIO_Pin_5,
-            pin_6   = GPIO_Pin_6,
-            pin_7   = GPIO_Pin_7,
-            pin_8   = GPIO_Pin_8,
-            pin_9   = GPIO_Pin_9,
-            pin_10  = GPIO_Pin_10,
-            pin_11  = GPIO_Pin_11,
-            pin_12  = GPIO_Pin_12,
-            pin_13  = GPIO_Pin_13,
-            pin_14  = GPIO_Pin_14,
-            pin_15  = GPIO_Pin_15,
-            pin_All = GPIO_Pin_All
-        };
-
-        namespace ahb
-        {
-            enum div : const uint32_t
-            {
-                div_1   = RCC_CFGR_HPRE_DIV1,
-                div_2   = RCC_CFGR_HPRE_DIV2,
-                div_4   = RCC_CFGR_HPRE_DIV4, 
-                div_8   = RCC_CFGR_HPRE_DIV8,
-                div_16  = RCC_CFGR_HPRE_DIV16,
-                div_64  = RCC_CFGR_HPRE_DIV64,
-                div_128 = RCC_CFGR_HPRE_DIV128,
-                div_256 = RCC_CFGR_HPRE_DIV256,
-                div_512 = RCC_CFGR_HPRE_DIV512
-            };
-        }
-
-        namespace apb_1 
-        {
-            enum div : const uint32_t
-            {
-                div_1  = RCC_CFGR_PPRE1_DIV1,
-                div_2  = RCC_CFGR_PPRE1_DIV2,
-                div_4  = RCC_CFGR_PPRE1_DIV4,
-                div_8  = RCC_CFGR_PPRE1_DIV8,
-                div_16 = RCC_CFGR_PPRE1_DIV16
-            };
-        }
-
-        namespace apb_2
-        {
-            enum div : const uint32_t
-            {
-                div_1  = RCC_CFGR_PPRE2_DIV1,
-                div_2  = RCC_CFGR_PPRE2_DIV2,
-                div_4  = RCC_CFGR_PPRE2_DIV4,
-                div_8  = RCC_CFGR_PPRE2_DIV8,
-                div_16 = RCC_CFGR_PPRE2_DIV16
-            };
-        }
-    }
+        pin_0   = GPIO_Pin_0,
+        pin_1   = GPIO_Pin_1,
+        pin_2   = GPIO_Pin_2,
+        pin_3   = GPIO_Pin_3,
+        pin_4   = GPIO_Pin_4,
+        pin_5   = GPIO_Pin_5,
+        pin_6   = GPIO_Pin_6,
+        pin_7   = GPIO_Pin_7,
+        pin_8   = GPIO_Pin_8,
+        pin_9   = GPIO_Pin_9,
+        pin_10  = GPIO_Pin_10,
+        pin_11  = GPIO_Pin_11,
+        pin_12  = GPIO_Pin_12,
+        pin_13  = GPIO_Pin_13,
+        pin_14  = GPIO_Pin_14,
+        pin_15  = GPIO_Pin_15,
+        pin_All = GPIO_Pin_All
+    };
 }
 
 #endif
