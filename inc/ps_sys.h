@@ -18,16 +18,36 @@
    along with PSLib.  If not, see <http://www.gnu.org/licenses/>.
    */
 
-#ifndef PS_SYS_TIMER_H
-#define PS_SYS_TIMER_H
+#ifndef PS_SYSTEM_H
+#define PS_SYSTEM_H
 
 #include "ps_stm32.h"
+#include "ps_bus.h"
+
 
 namespace ps
 {
     class sys
     {
         sys() = delete;
+
+        static uint64_t& __tick()
+        {
+            static uint64_t tick;
+            return tick;
+        }
+
+        static uint32_t& __tick_scale()
+        {
+            static uint32_t tick_scale;
+            return tick_scale;
+        }
+
+        static uint32_t& __delay()
+        {
+            static uint32_t delay;
+            return delay;
+        }
 
         static void __set_clock()
         {
@@ -55,9 +75,9 @@ namespace ps
 
             if (HSEStatus == (uint32_t)0x01)
             {
-                RCC->CFGR |= (uint32_t)ps::hw::ahb::div_1;
-                RCC->CFGR |= (uint32_t)ps::hw::apb_1::div_1;
-                RCC->CFGR |= (uint32_t)ps::hw::apb_2::div_1;
+                RCC->CFGR |= (uint32_t)bus::ahb::get_raw_div();
+                RCC->CFGR |= (uint32_t)bus::apb_1::get_raw_div();
+                RCC->CFGR |= (uint32_t)bus::apb_2::get_raw_div();
 
                 // Set SYSCLK to 24MHz
                 RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
@@ -87,26 +107,9 @@ namespace ps
             } 
         }
 
-        static uint64_t& __tick()
-        {
-            static uint64_t tick;
-            return tick;
-        }
-
-        static uint32_t& __tick_scale()
-        {
-            static uint32_t tickScale;
-            return tickScale;
-        }
-
-        static uint32_t& __delay()
-        {
-            static uint32_t delay;
-            return delay;
-        }
-
         public:
 
+        // main init
         static void init()
         {
             // Reset the RCC clock configuration to the default reset state(for debug purpose)
@@ -133,12 +136,12 @@ namespace ps
 
             // Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers
             // Configure the Flash Latency cycles and enable prefetch buffer
-            __set_clock();
+            sys::__set_clock();
         }
 
         static bool tick_init(uint32_t tickScale)
         {
-            __tick_scale() = tickScale;
+            sys::__tick_scale() = tickScale;
 
             RCC_ClocksTypeDef RCC_Clocks;
             RCC_GetClocksFreq(&RCC_Clocks);
@@ -158,24 +161,24 @@ namespace ps
 
         static const uint64_t get_tick()
         {
-            return __tick();
+            return sys::__tick();
         }
 
         static const uint32_t get_tick_scale()
         {
-            return __tick_scale();
+            return sys::__tick_scale();
         }
 
         static void tick_incr()
         {
-            __tick()++;
-            __delay()--;
+            sys::__tick()++;
+            sys::__delay()--;
         }
 
         static void sleep_ms(uint32_t ms)
         {
-            __delay() = (ms * (get_tick_scale()>>2)) / 250; 
-            while(__delay() != 0);
+            sys::__delay() = (ms * (sys::get_tick_scale()>>2)) / 250; 
+            while(sys::__delay() != 0);
         }
     };
 }
