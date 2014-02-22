@@ -3,52 +3,58 @@
 Example
 ``` cpp
 #include "ps_stm32.h"
-#include "ps_system.h"
+#include "ps_sys.h"
 #include "ps_gpio.h"
 #include "ps_usart.h"
 #include "ps_logger.h"
+#include "ps_util.h"
 
 using namespace ps;
 
-typedef hw::gpio::gpio< hw::gpio::gpio_a > gpio_a;
-typedef hw::gpio::gpio< hw::gpio::gpio_c > gpio_c;
-typedef hw::usart::usart< hw::usart::usart_1 > usart_1;
 typedef log::logger< usart_1 > logger;
+
+char itoa32_buff[12];
 
 int main()
 {
     gpio_a::enable_clock();
     gpio_a::init(
-            hw::gpio::speed_10MHz,
-            hw::gpio::mode_af_pp,
-            hw::pin::pin_9 | hw::pin::pin_10);
+            gpio::speed_10MHz,
+            gpio::mode_af_pp,
+            pin::pin_9 | pin::pin_10);
 
     usart_1::enable_clock();
     usart_1::init(9600);
     usart_1::init_nvic();
-    usart_1::enable_it(hw::usart::it::it_rxne);
+    usart_1::enable_it(usart::it::it_rxne);
     usart_1::enable();
     
-    usart_1::write((uint8_t*)"Hello world\n");
+    usart_1.write("Hello World!\n")
 
-    logger log("main.cpp", ps::log::debug);
+    logger log("main.cpp", log::debug);
 
-    log.debug("Hello world");
-    
-    char dma_buff[] = "Hello from DMA\n";
-    usart_1::init_dma_tx();
-    usart_1::write_dma((uint8_t*)dma_buff, 15);
-    
+    log.debug("System Timer");
+    log.debug("\tInitialization...");
+    sys::tick_init(1000);
+    log.debug("\tDone");
+
+    log.debug("GPIOC");
+    log.debug("\tInitialization...");
     gpio_c::enable_clock();
     gpio_c::init(
-            hw::gpio::speed_2MHz,
-            hw::gpio::mode_out_pp,
-            hw::pin::pin_8 | hw::pin::pin_9);
+            gpio::speed_2MHz,
+            gpio::mode_out_pp,
+            pin::pin_8 | pin::pin_9);
+    log.debug("\tDone");
+    
+    char dma_buff[] = "Hello from DMA!\n";
+    usart_1::init_dma_tx();
+    usart_1::write_dma((uint8_t*)dma_buff, 16);
 
-    sys::tick_init(10000);
     while(1)
     {
+        GPIOC->ODR ^= GPIO_Pin_9;
+        sys::sleep_ms(200);
         GPIOC->ODR ^= GPIO_Pin_8;
-        sys::sleep_ms(500);
     }
 }
